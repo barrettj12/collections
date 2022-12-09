@@ -7,9 +7,9 @@ type List[T comparable] []T
 
 // Constructors
 
-// NewList makes a new [List] with the specified initial capacity.
+// NewList makes a new List with the specified initial capacity.
 func NewList[T comparable](capacity int) *List[T] {
-	l := List[T](make([]T, 0, capacity))
+	l := make(List[T], 0, capacity)
 	return &l
 }
 
@@ -26,12 +26,12 @@ func (l *List[T]) AsSlice() []T {
 
 // Basic (non-mutating) functions
 
-// Len returns the number of elements of this List.
+// Len returns the number of elements in this List.
 func (l *List[T]) Len() int {
 	return len(*l)
 }
 
-// Size returns the number of elements of this List.
+// Size returns the number of elements in this List.
 func (l *List[T]) Size() int {
 	return len(*l)
 }
@@ -122,8 +122,8 @@ func (l *List[T]) Slice(low, high int) error {
 
 // Copy returns a copy of the given List.
 func (l *List[T]) Copy() *List[T] {
-	copy, _ := l.CopyPart(0, l.Size())
-	return copy
+	lcopy, _ := l.CopyPart(0, l.Size())
+	return lcopy
 }
 
 // CopyPart returns a partial copy of the given List, i.e. it copies the part
