@@ -82,5 +82,5 @@ func (m *Map[K, V]) Copy() *Map[K, V] {
 // Errors
 
 func errKeyNotFound(k any) error {
-	return fmt.Errorf("key %v not found in Map", k)
+	return fmt.Errorf("key not found in Map: %v", k)
 }
