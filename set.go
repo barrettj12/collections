@@ -1,0 +1,64 @@
+package collections
+
+// Set is a implementation of a set using a Go hashmap.
+type Set[T comparable] map[T]o
+
+// o is a "marker type" representing containment in a Set.
+type o struct{}
+
+// Constructors
+
+// NewSet makes a new Set with the specified initial capacity.
+func NewSet[T comparable](capacity int) *Set[T] {
+	s := make(Set[T], capacity)
+	return &s
+}
+
+// TODO: add conversion to/from slice?
+
+// Basic (non-mutating) functions
+
+// Size returns the number of elements in this Set.
+func (s *Set[T]) Size() int {
+	return len(*s)
+}
+
+// IsEmpty returns true if this Set is empty.
+func (s *Set[T]) IsEmpty() bool {
+	return s.Size() == 0
+}
+
+// Contains returns true if the given element is in the List.
+func (s *Set[T]) Contains(t T) bool {
+	_, ok := (*s)[t]
+	return ok
+}
+
+// Basic (mutating) functions
+
+// Add adds t to this Set, if it is not already in the Set.
+func (s *Set[T]) Add(t T) {
+	(*s)[t] = o{}
+}
+
+// Remove removes t from this Set. It returns false if t was not in the Set
+// to begin with, and returns true if t was removed from the Set.
+func (s *Set[T]) Remove(t T) bool {
+	ret := s.Contains(t)
+	delete(*s, t)
+	return ret
+}
+
+// Copying functions
+
+// Copy returns a copy of the given Set.
+func (s *Set[T]) Copy() *Set[T] {
+	cp := NewSet[T](s.Size())
+	for t := range *s {
+		cp.Add(t)
+	}
+	return cp
+}
+
+// TODO: add set-theoretic operations (union, intersection, difference,
+// symmetric difference)
