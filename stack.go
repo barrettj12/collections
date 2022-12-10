@@ -32,8 +32,8 @@ func (s *Stack[T]) Size() int {
 }
 
 // IsEmpty returns true if this Stack is empty.
-func (l *Stack[T]) IsEmpty() bool {
-	return l.Size() == 0
+func (s *Stack[T]) IsEmpty() bool {
+	return s.Size() == 0
 }
 
 // Capacity returns the current capacity of this Stack.
