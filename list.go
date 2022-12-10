@@ -67,18 +67,6 @@ func (l *List[T]) Get(pos int) (t T, err error) {
 	return
 }
 
-// Count counts the number of elements t in this List such that
-// f(index(t), t) == true.
-func (l *List[T]) Count(f func(int, T) bool) int {
-	count := 0
-	for i, t := range *l {
-		if f(i, t) {
-			count++
-		}
-	}
-	return count
-}
-
 // Basic (mutating) functions
 
 // Append appends the given elements to the end of the List.
@@ -166,6 +154,20 @@ func (l *List[T]) CopyPart(low, high int) (*List[T], error) {
 	copy(slice, (*l)[low:high])
 	lcopy := List[T](slice)
 	return &lcopy, nil
+}
+
+// Functional methods
+
+// Count counts the number of elements t in this List such that
+// f(index(t), t) == true.
+func (l *List[T]) Count(f func(int, T) bool) int {
+	count := 0
+	for i, t := range *l {
+		if f(i, t) {
+			count++
+		}
+	}
+	return count
 }
 
 // Internal methods
