@@ -56,6 +56,29 @@ func (l *List[T]) Contains(t T) bool {
 	return false
 }
 
+// Get returns the element at index pos in this List.
+// It returns an error if the given index is out of bounds.
+func (l *List[T]) Get(pos int) (t T, err error) {
+	if pos < 0 || pos >= l.Size() {
+		err = l.errIndexOutOfBounds(pos)
+	}
+
+	t = (*l)[pos]
+	return
+}
+
+// Count counts the number of elements t in this List such that
+// f(index(t), t) == true.
+func (l *List[T]) Count(f func(int, T) bool) int {
+	count := 0
+	for i, t := range *l {
+		if f(i, t) {
+			count++
+		}
+	}
+	return count
+}
+
 // Basic (mutating) functions
 
 // Append appends the given elements to the end of the List.
