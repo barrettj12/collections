@@ -202,6 +202,18 @@ func (l *List[T]) Count(f func(int, T) bool) int {
 	return count
 }
 
+// Filter returns a new List containing only the elements t in this List
+// such that f(index(t), t) == false.
+func (l *List[T]) Filter(f func(int, T) bool) *List[T] {
+	fList := NewList[T](l.Size())
+	for i, t := range *l {
+		if f(i, t) {
+			fList.Append(t)
+		}
+	}
+	return fList
+}
+
 // Ordering methods
 
 // Shuffle randomises the order of elements using rand.Shuffle.
