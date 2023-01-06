@@ -1,10 +1,26 @@
 package collections
 
+import "fmt"
+
 // Set is a implementation of a set using a Go hashmap.
 type Set[T comparable] map[T]o
 
 // o is a "marker type" representing containment in a Set.
 type o struct{}
+
+// String returns a string representation of this Set.
+func (s *Set[T]) String() string {
+	str := "{"
+
+	for t := range *s {
+		str += fmt.Sprintf("%v, ", t)
+	}
+
+	// Remove last comma
+	str = str[:len(str)-2]
+	str += "}"
+	return str
+}
 
 // Constructors
 
@@ -14,7 +30,16 @@ func NewSet[T comparable](capacity int) *Set[T] {
 	return &s
 }
 
-// TODO: add conversion to/from slice?
+// Slice returns a slice containing the elements of this Set.
+func (s *Set[T]) Slice() []T {
+	slice := make([]T, s.Size())
+	for t := range *s {
+		slice = append(slice, t)
+	}
+	return slice
+}
+
+// TODO: add conversion from slice?
 
 // Basic (non-mutating) functions
 
