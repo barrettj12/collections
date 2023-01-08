@@ -79,6 +79,7 @@ func (l *List[T]) Find(t T) (pos int, err error) {
 func (l *List[T]) Get(pos int) (t T, err error) {
 	if pos < 0 || pos >= l.Size() {
 		err = l.errIndexOutOfBounds(pos)
+		return
 	}
 
 	t = (*l)[pos]
