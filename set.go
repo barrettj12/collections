@@ -30,6 +30,15 @@ func NewSet[T comparable](capacity int) *Set[T] {
 	return &s
 }
 
+// AsSet returns a Set containing the elements of the given slice.
+func AsSet[T comparable](elems []T) *Set[T] {
+	s := NewSet[T](len(elems))
+	for _, t := range elems {
+		s.Add(t)
+	}
+	return s
+}
+
 // Slice returns a slice containing the elements of this Set.
 func (s *Set[T]) Slice() []T {
 	slice := make([]T, s.Size())
@@ -38,8 +47,6 @@ func (s *Set[T]) Slice() []T {
 	}
 	return slice
 }
-
-// TODO: add conversion from slice?
 
 // Basic (non-mutating) functions
 
