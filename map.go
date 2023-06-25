@@ -52,6 +52,14 @@ func (m *Map[K, V]) Get(k K) (v V, err error) {
 	return
 }
 
+// Keys returns all keys present in this Map.
+func (m *Map[K, V]) Keys() (keys []K) {
+	for k := range *m {
+		keys = append(keys, k)
+	}
+	return
+}
+
 // Basic (mutating) functions
 
 // Set adds the given key-value pair to this Map. If there is already a value
