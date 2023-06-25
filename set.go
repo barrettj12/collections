@@ -41,7 +41,7 @@ func AsSet[T comparable](elems []T) *Set[T] {
 
 // Slice returns a slice containing the elements of this Set.
 func (s *Set[T]) Slice() []T {
-	slice := make([]T, s.Size())
+	slice := make([]T, 0, s.Size())
 	for t := range *s {
 		slice = append(slice, t)
 	}
