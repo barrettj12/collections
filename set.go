@@ -92,5 +92,50 @@ func (s *Set[T]) Copy() *Set[T] {
 	return cp
 }
 
-// TODO: add set-theoretic operations (union, intersection, difference,
-// symmetric difference)
+// Union returns the Set of all elements which are in any of the given Sets.
+func Union[T comparable](sets ...*Set[T]) *Set[T] {
+	union := NewSet[T](0)
+	for _, set := range sets {
+		for t := range *set {
+			union.Add(t)
+		}
+	}
+	return union
+}
+
+// Intersection returns the Set of elements which are in all of the given sets.
+func Intersection[T comparable](sets ...*Set[T]) *Set[T] {
+	if len(sets) == 0 {
+		return nil
+	}
+	intsec := NewSet[T](sets[0].Size())
+elementLoop:
+	for t := range *sets[0] {
+		for _, set := range sets[1:] {
+			if !set.Contains(t) {
+				continue elementLoop
+			}
+		}
+		intsec.Add(t)
+	}
+	return intsec
+}
+
+// Difference returns the set of all elements in s1 which are not in s2.
+func Difference[T comparable](s1, s2 *Set[T]) *Set[T] {
+	diff := NewSet[T](s1.Size())
+	for t := range *s1 {
+		if !s2.Contains(t) {
+			diff.Add(t)
+		}
+	}
+	return diff
+}
+
+// SymmetricDifference returns the set of all elements which are in exactly
+// one of s1 and s2.
+func SymmetricDifference[T comparable](s1, s2 *Set[T]) *Set[T] {
+	return Union(Difference(s1, s2), Difference(s2, s1))
+}
+
+// TODO: write tests verifying that set theory laws hold
