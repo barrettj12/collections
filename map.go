@@ -53,11 +53,12 @@ func (m *Map[K, V]) Get(k K) (v V, err error) {
 }
 
 // Keys returns all keys present in this Map.
-func (m *Map[K, V]) Keys() (keys []K) {
+func (m *Map[K, V]) Keys() *List[K] {
+	keys := NewList[K](m.Size())
 	for k := range *m {
-		keys = append(keys, k)
+		keys.Append(k)
 	}
-	return
+	return keys
 }
 
 // Basic (mutating) functions
@@ -85,6 +86,40 @@ func (m *Map[K, V]) Copy() *Map[K, V] {
 		cp.Set(k, v)
 	}
 	return cp
+}
+
+// Iteration
+
+type mapIterator[K comparable, V any] struct {
+	m     *Map[K, V]
+	keys  *List[K]
+	index int
+}
+
+func (i *mapIterator[K, V]) HasNext() bool {
+	return i.index < i.keys.Size()
+}
+
+func (i *mapIterator[K, V]) Next() (K, V) {
+	k, _ := i.keys.Get(i.index)
+	i.index++
+	v, _ := i.m.Get(k)
+	return k, v
+}
+
+// Iterate returns an Iterator2 iterating over the given map.
+// If a non-nil comparator keyOrder is provided, then the iteration will be in
+// the order determined on the keys.
+func (m *Map[K, V]) Iterate(keyOrder func(K, K) bool) Iterator2[K, V] {
+	keys := m.Keys()
+	if keyOrder != nil {
+		keys.Sort(keyOrder)
+	}
+	return &mapIterator[K, V]{
+		m:     m,
+		keys:  keys,
+		index: 0,
+	}
 }
 
 // Errors
